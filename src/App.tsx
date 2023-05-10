@@ -1,41 +1,33 @@
 import './App.css';
 import wineData from "./wine-data.json"
-import { mean,median,mode } from './utils/statistics';
+import { calculateGamma } from './utils/statistics';
+import Table from "./ui/table";
 
-const classesArray = [...new Set(wineData.map(data => data.Alcohol))]  // Array of Alocohol classes
-const flavonoidsValueArray = classesArray.map(classNumber => {
+//// Array of Alocohol classes
+const classesArray = [...new Set(wineData.map(data => data.Alcohol))]  
+
+//create array of gamma values for different classes
+const gammaValueArray = classesArray.map(classNumber => {
+  const gamma = wineData.filter((data) => {
+    return data.Alcohol === classNumber
+  }).map(data => calculateGamma(+data.Ash,+data.Hue,+data.Magnesium))
+  return gamma
+})
+
+//created array of flavanoid values for different classes
+const flavanoidsValueArray = classesArray.map(classNumber => {
   const flavonoids = wineData.filter((data) => {
     return data.Alcohol === classNumber
   }).map(data => +data.Flavanoids)
   return flavonoids
 })
 
+
 function App() {
-  console.log("classesArray",classesArray,flavonoidsValueArray)
   return (
-    <div className="App">
-      <table>
-        <tbody>
-          <th>
-            Measure
-          </th>
-          {classesArray.map(class_number => <th key={class_number}>Class {class_number}</th>)}
-          <tr>
-            <td>Flavonoids Mean</td>
-            {flavonoidsValueArray.map(valueArr => <td>{mean(valueArr)}</td>)}
-          </tr>
-          <tr>
-            <td>Flavonoids Median</td>
-            {flavonoidsValueArray.map(valueArr => <td>{median(valueArr)}</td>)}
-
-          </tr>
-          <tr>
-            <td>Flavonoids Mode</td>
-            {flavonoidsValueArray.map(valueArr => <td>{mode(valueArr)}</td>)}
-
-          </tr>
-        </tbody>
-      </table>
+    <div className="App"> 
+      <Table property={"Flavanoid"} classesArray={classesArray} propertyValueArray={flavanoidsValueArray} />
+      <Table property={"Gamma"} classesArray={classesArray} propertyValueArray={gammaValueArray} />
     </div>
   );
 }

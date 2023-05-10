@@ -9,21 +9,21 @@ for(let value of arr){
   return (sum / arr.length).toFixed(3);
 };
 
+
 //Median is the middle number in the sorted array of numbers
 const median = (arr : wineProps) => {
   arr.sort((a, b) => +a - +b);
   const length = arr.length;
-  console.log("arr",arr)
-  if (arr.length % 2 === 0){
-    return ((+arr[length / 2 - 1] + (+arr[length / 2])) / 2).toFixed(3);
-   } // if length is Even
+  if (arr.length % 2 === 0) return ((+arr[length / 2 - 1] + (+arr[length / 2])) / 2).toFixed(3);
+    // if length is Even
   return (+arr[(length - 1) / 2]).toFixed(3); // if length is odd
 };
+
 
 //Mode is the number that occurs most often.
 const mode = (arr : wineProps) => {
   let count = 0;
-  let maxOccurrence = 0;
+  let maxOccurrenceValue = arr[0];
   let map = new Map();
   for (let value of arr) {
     let val = map.get(value);
@@ -33,11 +33,17 @@ const mode = (arr : wineProps) => {
       map.set(value, 1);
     }
     if (count < val) {
-      maxOccurrence = +value;
+      maxOccurrenceValue = +value;
       count = val;
     }
   }
-  return maxOccurrence;
+  return maxOccurrenceValue;
 };
 
-export {mean, median, mode};
+
+//calculate gamma
+const calculateGamma = (ash : number, hue : number, magnesium : number) => {
+  return ((ash*hue)/magnesium).toFixed(3)
+}
+
+export {mean, median, mode,calculateGamma};
